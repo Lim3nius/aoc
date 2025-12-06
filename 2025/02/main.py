@@ -42,20 +42,22 @@ def invalids_in_range(r: Range) -> list[int]:
 def invalid_v2(r: Range) -> list[int]:
     invalids: list[int] = []
 
-    # breakpoint()
     for i in range(r.start, r.end + 1):
         txt_repr = str(i)
         if len(txt_repr) % 2 == 1:
             c = Counter(txt_repr)
-            if c.keys() == 1:
+            if len(c.keys()) == 1:
                 invalids.append(i)
                 continue
 
         half = len(txt_repr) // 2
         for j in range(1, half + 1):
-            chunks = [txt_repr[x : x + j] for x in range(0, len(txt_repr), j)]
-            # print(chunks)
-            if all(x == chunks[0] for x in chunks):
+            if len(txt_repr) % j != 0:
+                continue
+
+            chunk0 = txt_repr[0:j]
+            chunks = (txt_repr[x : x + j] for x in range(0, len(txt_repr), j))
+            if all(x == chunk0 for x in chunks):
                 invalids.append(i)
                 break
 
